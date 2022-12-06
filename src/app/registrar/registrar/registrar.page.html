@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title style="text-align:center;">Te llevo App</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-button fill="outline" [routerLink]="['']" size="small" ><ion-icon name="arrow-back-outline"></ion-icon></ion-button>
+
+
+  <form [formGroup]="formulario" (ngSubmit)="registrar()">
+    <h3 style="text-align:center;">Crea tu cuenta</h3>
+    <br>
+    <ion-item>
+    <ion-label position="floating" style="text-align:center;">Usuario </ion-label>
+    <ion-input type="text" formControlName="usuario"></ion-input>
+    </ion-item>
+
+     <ion-item>
+    <ion-label position="floating" style="text-align:center;">Contraseña </ion-label>
+    <ion-input type="password" formControlName="password"></ion-input>
+    </ion-item>
+
+    <ion-item>
+    <ion-select placeholder="Vehículo"  formControlName="vehiculo" >
+      <ion-select-option value="si">Si</ion-select-option>
+      <ion-select-option value="no">No</ion-select-option>
+    </ion-select>
+    </ion-item>
+    <br>
+
+    <ion-button type="submit" [disabled]="formulario.invalid" expand="block" fill="outline">Registrarse</ion-button>
+
+  </form>
+
+</ion-content>

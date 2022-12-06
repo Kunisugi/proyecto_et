@@ -1,0 +1,22 @@
+{
+  "user": [
+    {
+      "usuario": "javi",
+      "password": "1234",
+      "id": 1,
+      "vehiculo": "si"
+    },
+    {
+      "usuario": "javi1",
+      "password": "1234",
+      "id": 2,
+      "vehiculo": "no"
+    },
+    {
+      "usuario": "diegosky",
+      "password": "1234",
+      "vehiculo": "si",
+      "id": 3
+    }
+  ]
+}
