@@ -22,14 +22,37 @@
     </ion-item>
 
     <ion-item>
-    <ion-select placeholder="Vehículo"  formControlName="vehiculo" >
-      <ion-select-option value="si">Si</ion-select-option>
+    <ion-select placeholder="Vehículo"  formControlName="vehiculo">
+      <ion-select-option value="si"  >Si</ion-select-option>
       <ion-select-option value="no">No</ion-select-option>
     </ion-select>
     </ion-item>
+    <p *ngIf="estado==true; then hayDatos else noDatos"></p>
+    <ng-template #hayDatos>
+      <ion-item>
+        <ion-label position="floating" style="text-align:center;">Modelo</ion-label>
+        <ion-input type="text" formControlName="modelo"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating" style="text-align:center;">Patente </ion-label>
+        <ion-input type="text" formControlName="patente"></ion-input>
+      </ion-item>
+
+      <ion-button type="button" expand="block" fill="outline" (click)="auto()">Confirmar datos</ion-button>
+
+    </ng-template>
+    <ng-template #noDatos>
+      <ion-button type="submit" [disabled]="formulario.invalid" expand="block" fill="outline">Registrarse</ion-button>
+
+    </ng-template>
+
+
+
+
+
     <br>
 
-    <ion-button type="submit" [disabled]="formulario.invalid" expand="block" fill="outline">Registrarse</ion-button>
+
 
   </form>
 

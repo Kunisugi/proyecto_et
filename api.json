@@ -32,6 +32,70 @@
       "id": 3,
       "estado": "off",
       "uber": []
+    },
+    {
+      "usuario": "dawdwa",
+      "password": "23132",
+      "vehiculo": "no",
+      "estado": "off",
+      "uber": [
+        {
+          "salida": "",
+          "precio": 0,
+          "patente": "",
+          "modelo": "",
+          "destino": ""
+        }
+      ],
+      "id": 4
+    },
+    {
+      "usuario": "dawdwa",
+      "password": "dwadwa",
+      "vehiculo": "no",
+      "estado": "off",
+      "uber": [
+        {
+          "salida": "",
+          "precio": 0,
+          "patente": "",
+          "modelo": "",
+          "destino": ""
+        }
+      ],
+      "id": 5
+    },
+    {
+      "usuario": "dwadaw",
+      "password": "23123",
+      "vehiculo": "no",
+      "estado": "off",
+      "uber": [
+        {
+          "salida": "",
+          "precio": 0,
+          "patente": "",
+          "modelo": "",
+          "destino": ""
+        }
+      ],
+      "id": 6
+    },
+    {
+      "usuario": "javi1",
+      "password": "dsadsadsa",
+      "vehiculo": "no",
+      "estado": "off",
+      "uber": [
+        {
+          "salida": "",
+          "precio": 0,
+          "patente": "",
+          "modelo": "",
+          "destino": ""
+        }
+      ],
+      "id": 7
     }
   ]
 }

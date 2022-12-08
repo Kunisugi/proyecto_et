@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup} from '@angular/forms';
 import { UsuariosService } from './../../servicios/usuarios/usuarios.service';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,7 @@ export class LoginPage {
   public user : any;
 
 
-  constructor(private fb : FormBuilder, private api: UsuariosService, private router: Router ) { this.form()}
+  constructor(private fb : FormBuilder, private api: UsuariosService, private router: Router, private alertController: AlertController ) { this.form()}
 
   ngOnInit() {
     this.api.listarUser$.subscribe(datos => {
@@ -25,6 +26,25 @@ export class LoginPage {
 
 
   }
+  async noExisteUsuario() {
+    const alert = await this.alertController.create({
+      header: 'Alert',
+      message: 'El usuario no existe',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
+  async contraseñaErronea() {
+    const alert = await this.alertController.create({
+      header: 'Alert',
+      message: 'contraseña incorrecta, vuelva a intentar',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
+
 
   public form(){
     this.formulario = this.fb.group({
@@ -53,14 +73,12 @@ export class LoginPage {
         }
 
       }else{
-        console.log('Contraseña incorrecta, vuelva a intentar')
+        this.contraseñaErronea();
       }
 
     }else{
-      alert('no se encontro usuario')
+      this.noExisteUsuario();
     }
-
-
   }
 
 }
