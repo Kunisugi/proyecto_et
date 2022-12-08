@@ -10,8 +10,12 @@ const routes: Routes = [{
     loadChildren: () => import('./registrar/registrar/registrar.module').then( m => m.RegistrarPageModule)
   },
   {
-    path: 'recuperar-pass',
+    path: 'recuperar',
     loadChildren: () => import('./recuperarPass/recuperar-pass/recuperar-pass.module').then( m => m.RecuperarPassPageModule)
+  },
+  {
+    path: 'rutas',
+    loadChildren: () => import('./listarRutas/listar-rutas/listar-rutas.module').then( m => m.ListarRutasPageModule)
   }
 
 ];

@@ -2,21 +2,36 @@
   "user": [
     {
       "usuario": "javi",
-      "password": "1234",
+      "password": "1234567",
       "id": 1,
-      "vehiculo": "si"
+      "vehiculo": "si",
+      "estado": "on",
+      "uber": [
+        {
+          "salida": "13:50",
+          "precio": 25000,
+          "patente": "XXXXX",
+          "modelo": "Spark GT",
+          "destino": "Santiago",
+          "idUser": 1
+        }
+      ]
     },
     {
       "usuario": "javi1",
       "password": "1234",
       "id": 2,
-      "vehiculo": "no"
+      "vehiculo": "no",
+      "estado": "off",
+      "uber": []
     },
     {
       "usuario": "diegosky",
       "password": "1234",
       "vehiculo": "si",
-      "id": 3
+      "id": 3,
+      "estado": "off",
+      "uber": []
     }
   ]
 }

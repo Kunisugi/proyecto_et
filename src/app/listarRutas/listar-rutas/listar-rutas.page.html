@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title style="text-align:center;">Rutas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card *ngFor="let ruta of rutas">
+    <ion-list>
+      <!--
+      <ion-item>
+      <p>Chofer: {{ruta.usuario}}</p>
+      </ion-item>
+      -->
+      <ion-list *ngFor="let uber of ruta.uber">
+        <!--
+          <ion-item>
+        <p>Patente: {{uber.patente}}</p>
+      </ion-item>
+      <ion-item>
+        <p>Precio: ${{uber.precio}}</p>
+      </ion-item>
+      <ion-item>
+        <p>Modelo: {{uber.modelo}}</p>
+      </ion-item>
+        -->
+        <ion-item>
+        <p>Hora de salida: {{uber.salida}}</p>
+      </ion-item>
+      <ion-item>
+        <p>Destino: {{uber.destino}}</p>
+      </ion-item>
+
+      </ion-list>
+
+
+    </ion-list>
+
+
+
+
+  </ion-card>
+
+</ion-content>

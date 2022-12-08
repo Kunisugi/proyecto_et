@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UsuariosService {
-  private api_user = 'http://localhost:3000/user';
+  private api_user = 'http://localhost:3000/user/';
   private comportamientoListar = new BehaviorSubject<Array<any>>([]);
   public listarUser$ = this.comportamientoListar.asObservable();
 
@@ -25,6 +25,12 @@ export class UsuariosService {
       }
     })
   }
+
+  public patchUser(user, id){ //Modificar producto
+    let direccion = this.api_user + id;
+    return this.http.patch(direccion, user);
+  }
+
 
 
 }

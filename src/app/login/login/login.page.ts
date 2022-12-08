@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup} from '@angular/forms';
 import { UsuariosService } from './../../servicios/usuarios/usuarios.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,7 @@ export class LoginPage {
   public user : any;
 
 
-  constructor(private fb : FormBuilder, private api: UsuariosService ) { this.form()}
+  constructor(private fb : FormBuilder, private api: UsuariosService, private router: Router ) { this.form()}
 
   ngOnInit() {
     this.api.listarUser$.subscribe(datos => {
@@ -46,6 +47,8 @@ export class LoginPage {
           console.log('Tiene auto')
         }else{
           console.log('No tiene auto')
+          this.router.navigate(['rutas'])
+
 
         }
 

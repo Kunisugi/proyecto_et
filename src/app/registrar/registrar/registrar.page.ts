@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
 import { UsuariosService } from './../../servicios/usuarios/usuarios.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-registrar',
@@ -11,8 +12,9 @@ export class RegistrarPage implements OnInit {
   public listaUsuarios: Array<any> = [];
   public formulario: FormGroup;
   public user: any;
+  public estado: boolean = false;
 
-  constructor(private fb : FormBuilder, private api : UsuariosService) { this.form()}
+  constructor(private fb : FormBuilder, private api : UsuariosService, private alertController: AlertController) { this.form()}
 
   ngOnInit() {
     this.api.listarUser$.subscribe(datos => {
@@ -37,14 +39,33 @@ export class RegistrarPage implements OnInit {
     if(this.user){
       alert('Existe usuario')
     }else{
-      this.api.postUsuario({
-        ...this.formulario.value
-      }).subscribe(data => {
-        alert('Registrado correctamente')
-      })
+      if(this.formulario.value.vehiculo === 'si'){
+          this.api.postUsuario({
+            ...this.formulario.value,
+            estado: 'off',
+            uber:[{
+              salida: "",
+              precio: 0,
+              patente: "",
+              modelo: "",
+              destino: "",}]
+          }).subscribe(data => {})
+        }
+        else{
+          this.api.postUsuario({
+            ...this.formulario.value}).subscribe(data => {
+
+          })
+
+
+        }
+
     }
 
 
   }
+
+
+
 
 }
