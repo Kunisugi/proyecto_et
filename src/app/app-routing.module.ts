@@ -16,6 +16,14 @@ const routes: Routes = [{
   {
     path: 'rutas',
     loadChildren: () => import('./listarRutas/listar-rutas/listar-rutas.module').then( m => m.ListarRutasPageModule)
+  },
+  {
+    path: 'maps',
+    loadChildren: () => import('./maps/maps-routing.module').then( m => m.MapsPageRoutingModule)
+  },
+  {
+    path: 'maps',
+    loadChildren: () => import('./maps/maps.module').then( m => m.MapsPageModule)
   }
 
 ];
