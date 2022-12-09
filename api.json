@@ -96,6 +96,22 @@
         }
       ],
       "id": 7
+    },
+    {
+      "usuario": "diego",
+      "password": "1234",
+      "vehiculo": "si",
+      "estado": "off",
+      "uber": [
+        {
+          "salida": "",
+          "precio": 0,
+          "patente": "xxxxxxx",
+          "modelo": "chevrolet ",
+          "destino": ""
+        }
+      ],
+      "id": 8
     }
   ]
 }

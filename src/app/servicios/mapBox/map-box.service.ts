@@ -1,24 +1,17 @@
 import { Injectable } from '@angular/core';
-import {map} from 'rxjs/operators';
-import { HttpClient} from '@angular/common/http';
-import { environment } from 'src/environments/environment';
-
-export interface MapBoxOutpu{
-  attribution: string;
-  features: Feature[];
-  query: [];
-}
-export interface Feature{
-  place_name: string;
-}
+import { DirectionsApiClient } from 'src/app/maps/api/directionsApiClient';
+import { DirectionsResponse } from 'src/app/maps/interfaces/directions';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MapBoxService {
 
-  constructor(private htpp: HttpClient) { }
+  constructor( private directionsApi: DirectionsApiClient) { }
 
 
+  getRouteBetweenPoints(start:[number, number], end: [number, number]){
+    this.directionsApi.get<DirectionsResponse>(`/${start.join(',')};${end.join(',')}`).subscribe(resp => console.log(resp));
+  }
 
 }
