@@ -65,6 +65,7 @@ export class LoginPage {
         console.log('Validación correcta')
         if(this.user.vehiculo === 'si'){
           console.log('Tiene auto')
+          this.router.navigate(['maps'])
         }else{
           console.log('No tiene auto')
           this.router.navigate(['rutas'])

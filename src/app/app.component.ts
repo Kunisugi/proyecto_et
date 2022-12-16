@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
+
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,13 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+  constructor(private geolocation: Geolocation) { }
+
+  ngOnInit(){
+    console.log('Hola :V, se ejecuto la DB');
+
+  }
+
+
+
 }
