@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup} from '@angular/forms';
-import { UsuariosService } from './../../servicios/usuarios/usuarios.service';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { FirestoreService} from './../../servicios/DB/firestore.service';
 
 @Component({
   selector: 'app-login',
@@ -16,13 +16,14 @@ export class LoginPage {
   public user : any;
 
 
-  constructor(private fb : FormBuilder, private api: UsuariosService, private router: Router, private alertController: AlertController ) { this.form()}
+  constructor(private fb : FormBuilder, private router: Router, private alertController: AlertController, public fire: FirestoreService ) { this.form()}
 
   ngOnInit() {
-    this.api.listarUser$.subscribe(datos => {
+    this.fire.listarUserDB$.subscribe(datos => {
       this.listaUsuarios = datos;
-    });
-    this.api.getPersona();
+      console.log(this.listaUsuarios, 'soy listar usuarios')
+    })
+    this.fire.getCollection();
 
 
   }
@@ -54,11 +55,10 @@ export class LoginPage {
     })
 
   }
-
   public login(){
     this.user = this.listaUsuarios.find(elemento => {
       const usuario = this.formulario.value.user
-      return elemento.usuario === usuario
+      return elemento.user === usuario
     })
     if(this.user){
       if(this.user.password === this.formulario.value.password){
@@ -69,8 +69,6 @@ export class LoginPage {
         }else{
           console.log('No tiene auto')
           this.router.navigate(['rutas'])
-
-
         }
 
       }else{
@@ -81,5 +79,6 @@ export class LoginPage {
       this.noExisteUsuario();
     }
   }
+
 
 }
