@@ -179,7 +179,7 @@ export class MapsPage implements OnInit {
         password:this.user.password,
         vehiculo: this.user.vehiculo,
         estado: 'on',
-        id: this.arrayUber.id,
+        id: this.user.id,
         uber: [{
           precio : this.arrayUber.precio,
           salida: this.arrayUber.salida,
@@ -196,9 +196,8 @@ export class MapsPage implements OnInit {
       this.router.navigate(['index']).then(() => {
         window.location.reload();
       })
-
-
   }
+
   public volver(){
     this.router.navigate(['index'])
 
