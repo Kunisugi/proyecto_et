@@ -3,6 +3,8 @@ import * as Mapboxgl from 'mapbox-gl';
 import { environment } from './../../environments/environment';
 import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
 import { MapBoxService, Feature  } from '../servicios/mapBox/map-box.service';
+import { HttpClient } from '@angular/common/http';
+import { FirestoreService} from '../servicios/DB/firestore.service';
 
 @Component({
   selector: 'app-maps',
@@ -13,18 +15,38 @@ export class MapsPage implements OnInit {
   public map: Mapboxgl.Map;
   public start = [-70.70555523861034, -33.5988065509325];
   public style = 'mapbox://styles/mapbox/streets-v11';
+  public cords : any;
+  public name: any;
+  public user : any;
+  public arrayUber : any;
+  public destino : string;
+  public inicio : string;
+
+
+
+
+  public listarCoords: any
+  public listarName: any
+
+  private apiurl = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
+  private url = '';
+  private apiurl2 = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
+  private url2 = '';
 
 
   constructor(
     private geolocation: Geolocation,
-    private mapboxService : MapBoxService) {
+    private mapboxService : MapBoxService,
+    private http: HttpClient,
+    private fire: FirestoreService) {
     Mapboxgl.accessToken = environment.MAPBOX_KEY,
     this.getGeoLocation();
+
   }
 
    addresses:string[] = [];
    selectedAddress = null;
-   center : Array<any> = [];
+   center : string;
    selectedCenter = null;
 
 
@@ -38,31 +60,29 @@ export class MapsPage implements OnInit {
       });
     }else{
       this.addresses = [];
-      this.center = [];
+
     }
    }
 
    onSelect(address : string){
     this.selectedAddress = address;
-    this.selectedCenter = this.center;
-    this.mapboxService
-      .search_word(address)
-      .subscribe((features : Feature[])=>{
-      features.map(center => console.log(center, 'soy center'))
-      console.log(features, 'soyfeatures')
-
-      });
-
-
-
-
     this.addresses = [];
-    this.center = [];
+    this.destino = this.selectedAddress;
+
+    this.url = this.apiurl + this.selectedAddress + '.json' + '?'  + 'access_token=' +environment.MAPBOX_KEY;
+
+    this.http.get<Array<any>>(this.url).subscribe(data => {
+      this.listarCoords = data;
+
+      this.cords = this.listarCoords.features[0];
+
+      this.crearMarcador3(this.cords.center[1], this.cords.center[0] )
+      this.selectedAddress = "";
+    })
   }
 
   ngOnInit() {
-
-
+    this.user = JSON.parse(localStorage.getItem("user"));
 
     this.map = new Mapboxgl.Map({
       container: 'mapa-box',
@@ -86,13 +106,25 @@ export class MapsPage implements OnInit {
 
   crearMarcador2(lng: number, lat: number){
     const marker = new Mapboxgl.Marker({
-      draggable: true,
+      draggable: false,
       color: 'red'
       }).setLngLat([lat,lng])
       .addTo(this.map);
       marker.on("dragend",()=>
       console.log(marker.getLngLat()))
   }
+
+  crearMarcador3(lng: number, lat: number){
+    const marker = new Mapboxgl.Marker({
+      draggable: true,
+      color: 'green'
+      }).setLngLat([lat,lng])
+      .addTo(this.map);
+      marker.on("dragend",()=>
+      console.log(marker.getLngLat()))
+  }
+
+
 
   getGeoLocation(){
     this.geolocation.getCurrentPosition().then((resp) => {
@@ -101,6 +133,14 @@ export class MapsPage implements OnInit {
       console.log("latitud", latitude);
       console.log("longitude", longitude);
       this.crearMarcador2(latitude, longitude);
+
+      this.url2 = this.apiurl2 + longitude + ',' + latitude+ '.json' + '?'  + 'access_token=' +environment.MAPBOX_KEY;
+
+      this.http.get<Array<any>>(this.url2).subscribe(data => {
+        this.listarName = data;
+        this.name = this.listarName.features[0];
+        this.inicio = this.name.place_name;
+      })
 
       // resp.coords.latitude
       // resp.coords.longitude
@@ -115,6 +155,44 @@ export class MapsPage implements OnInit {
       // data.coords.longitude
      });
   }
+  onClick(){
+
+    this.arrayUber = this.user.uber[0];
+    console.log(this.inicio)
+    console.log(this.destino)
+
+
+    const data = {
+      estado: 'on',
+      uber : [{
+        precio : this.arrayUber.precio,
+        salida: this.arrayUber.salida,
+        modelo : this.arrayUber.modelo,
+        destino: this.destino,
+        patente: this.arrayUber.patente,
+        inicio: this.inicio
+      }]}
+       const userStorage = {
+        usuario : this.arrayUber.usuario,
+        password: this.arrayUber.password,
+        vehiculo: this.arrayUber.vehiculo,
+        estado: 'on',
+        id: this.arrayUber.id,
+        uber: [{
+          precio : this.arrayUber.precio,
+          salida: this.arrayUber.salida,
+          modelo : this.arrayUber.modelo,
+          destino: this.destino,
+          patente: this.arrayUber.patente,
+          inicio: this.inicio
+        }],
+      }
+      this.fire.updateDoc(data,'Usuarios', this.user.id.toString());
+      localStorage.setItem("user", JSON.stringify(userStorage));
+
+
+  }
+
 
 
 

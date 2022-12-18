@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { UsuariosService } from './../../servicios/usuarios/usuarios.service';
 import { FormControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { FirestoreService} from './../../servicios/DB/firestore.service';
+import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-recuperar-pass',
@@ -13,14 +15,14 @@ export class RecuperarPassPage implements OnInit {
   public user : any;
   public estado : boolean = false;
 
-  constructor( private api : UsuariosService, private fb : FormBuilder) {this.form()}
+  constructor(private fb : FormBuilder, private fire: FirestoreService, private router: Router, private alertController: AlertController) {this.form()}
 
   ngOnInit() {
-    this.api.listarUser$.subscribe(datos => {
+    this.fire.listarUserDB$.subscribe(datos => {
       this.listaUsuarios = datos;
-    });
-    this.api.getPersona();
-
+      console.log(this.listaUsuarios, 'soy listar usuarios en recuperar pass')
+    })
+    this.fire.getCollection();
   }
 
   public form(){
@@ -29,42 +31,66 @@ export class RecuperarPassPage implements OnInit {
       password: new FormControl('',[Validators.required])
 
     })
-
   }
-
-
 
   public mostrarForm(){
     this.user = this.listaUsuarios.find(elemento => {
       const usuario = this.formulario.value.usuario
+      console.log(elemento, 'Soy elemento')
       return elemento.usuario === usuario
+
     });
     if(this.user){ //Si existe usuario
       if(this.estado == true){ //Si estado es verdadero
         if(this.user.password == this.formulario.value.password){//Si contraseña antigua es igual a la que se quiere cambiar
-          alert('Contraseña es igual a la anterior...')
-
-
+          this.contraseñaAnterior();
         }else{ //Si es diferente
-          const nuevaContra =  this.formulario.value
-
-          this.api.patchUser(nuevaContra , this.user.id).subscribe(data => {
-            alert('Contraseña modificada correctmente')
-        })
-
+          const nuevaContra =  this.formulario.value;
+          const id = this.user.id;
+          this.fire.updateDoc(nuevaContra,'Usuarios', id.toString());
+          this.router.navigate(['']);
+          this.cambioExitoso();
         }
-
-
       }else{//Si estado es falso
         console.log('cambio estado a true')
         this.estado = true;
-
       }
     }else{//Si no existe usuario
-      alert('Usuario No encontrado')
+      this.noExisteUsuario()
 
     }
 
   }
+  async contraseñaAnterior() {
+    const alert = await this.alertController.create({
+      header: 'Alert',
+      message: 'La contraseña es igual a la anterior...',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
+  async noExisteUsuario() {
+    const alert = await this.alertController.create({
+      header: 'Alert',
+      message: 'El usuario no existe',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
+  async cambioExitoso() {
+    const alert = await this.alertController.create({
+      header: 'Alert',
+      message: 'Contraseña correctamente cambiada',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
+
+
+
+
 
 }

@@ -16,7 +16,7 @@ export class LoginPage {
   public user : any;
 
 
-  constructor(private fb : FormBuilder, private router: Router, private alertController: AlertController, public fire: FirestoreService ) { this.form()}
+  constructor(private fb : FormBuilder, private router: Router, private alertController: AlertController, private fire: FirestoreService ) { this.form()}
 
   ngOnInit() {
     this.fire.listarUserDB$.subscribe(datos => {
@@ -58,17 +58,19 @@ export class LoginPage {
   public login(){
     this.user = this.listaUsuarios.find(elemento => {
       const usuario = this.formulario.value.user
-      return elemento.user === usuario
+      return elemento.usuario === usuario
     })
     if(this.user){
       if(this.user.password === this.formulario.value.password){
         console.log('Validación correcta')
         if(this.user.vehiculo === 'si'){
           console.log('Tiene auto')
-          this.router.navigate(['maps'])
+          this.router.navigate(['index'])
+          localStorage.setItem("user", JSON.stringify(this.user));
         }else{
+          localStorage.setItem("user", JSON.stringify(this.user));
           console.log('No tiene auto')
-          this.router.navigate(['rutas'])
+          this.router.navigate(['index']);
         }
 
       }else{
@@ -79,6 +81,7 @@ export class LoginPage {
       this.noExisteUsuario();
     }
   }
+
 
 
 }

@@ -6,40 +6,22 @@
 
 <ion-content>
 
-  <ion-card *ngFor="let ruta of rutas">
-    <ion-list>
-      <!--
-      <ion-item>
-      <p>Chofer: {{ruta.usuario}}</p>
-      </ion-item>
-      -->
-      <ion-list *ngFor="let uber of ruta.uber">
-        <!--
-          <ion-item>
-        <p>Patente: {{uber.patente}}</p>
-      </ion-item>
-      <ion-item>
-        <p>Precio: ${{uber.precio}}</p>
-      </ion-item>
-      <ion-item>
-        <p>Modelo: {{uber.modelo}}</p>
-      </ion-item>
-        -->
-        <ion-item>
-        <p>Hora de salida: {{uber.salida}}</p>
-      </ion-item>
-      <ion-item>
-        <p>Destino: {{uber.destino}}</p>
-      </ion-item>
+  <ion-list>
+    <ion-item *ngFor="let ruta of rutas">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>{{ruta.usuario}}</ion-card-title>
+          <ion-card-subtitle></ion-card-subtitle>
+        </ion-card-header>
 
-      </ion-list>
+        <ion-card-content *ngFor="let ruta of ruta.uber">
 
-
-    </ion-list>
-
-
-
-
-  </ion-card>
+        Hora de salida: {{ruta.salida|date:'HH:mm'}} <br>
+        Inicio : {{ruta.inicio}} <br>
+        Destino: {{ruta.destino}}
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+  </ion-list>
 
 </ion-content>

@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-import { DirectionsApiClient } from 'src/app/maps/api/directionsApiClient';
-import { DirectionsResponse } from 'src/app/maps/interfaces/directions';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import {map} from 'rxjs/operators';
-
+import { BehaviorSubject, Observable } from 'rxjs';
 
 
 export interface MapboxOutput{
@@ -22,12 +20,17 @@ export interface Feature {
 })
 export class MapBoxService {
 
-  constructor( private directionsApi: DirectionsApiClient, private http: HttpClient) { }
 
+  private ComportamientoCoords = new BehaviorSubject<Array<any>>([]);
+  public listarCoords$ = this.ComportamientoCoords.asObservable();
 
-  getRouteBetweenPoints(start:[number, number], end: [number, number]){
-    this.directionsApi.get<DirectionsResponse>(`/${start.join(',')};${end.join(',')}`).subscribe(resp => console.log(resp));
-  }
+  private ComportamientoName = new BehaviorSubject<Array<any>>([]);
+  public listarName$ = this.ComportamientoCoords.asObservable();
+
+  constructor(
+    private http: HttpClient,
+    ) { }
+
 
   search_word(query:string){
     const url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
@@ -37,7 +40,6 @@ export class MapBoxService {
       return res.features;
     }));
   }
-
 
 
 }

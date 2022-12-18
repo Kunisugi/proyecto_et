@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
-import { UsuariosService } from './../../servicios/usuarios/usuarios.service';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { FirestoreService} from './../../servicios/DB/firestore.service';
 
 @Component({
   selector: 'app-registrar',
@@ -15,14 +15,18 @@ export class RegistrarPage implements OnInit {
   public user: any;
   public estado: boolean = false;
 
-  constructor(private fb : FormBuilder, private api : UsuariosService, private alertController: AlertController, private router: Router) { this.form()}
+  constructor(private fb : FormBuilder, private alertController: AlertController, private router: Router, private fire: FirestoreService) { this.form()}
 
   ngOnInit() {
-    this.api.listarUser$.subscribe(datos => {
+    this.fire.listarUserDB$.subscribe(datos => {
       this.listaUsuarios = datos;
-      //console.log(this.listaUsuarios)
+      console.log(this.listaUsuarios, 'Estoy en registrar')
+      console.log(this.listaUsuarios.length)
     })
-    this.api.getPersona();
+    this.fire.getCollection();
+
+
+
   }
   public form(){this.formulario = this.fb.group({
     usuario: new FormControl('',[Validators.required]),
@@ -53,23 +57,26 @@ export class RegistrarPage implements OnInit {
   }
 
   public auto(){
-    this.api.postUsuario({
+    const data = {
       usuario: this.formulario.value.usuario,
       password: this.formulario.value.password,
       vehiculo: this.formulario.value.vehiculo,
+      id: this.listaUsuarios.length + 1,
       estado: 'off',
       uber:[{
         salida: "",
         precio: 0,
         patente: this.formulario.value.patente,
         modelo: this.formulario.value.modelo,
-        destino: "",}]
-    }).subscribe(data => {
+        destino: "",
+        inicio: ""
+      }]
+    };
+    const path = 'Usuarios/';
+    const id = this.listaUsuarios.length + 1;
+    this.fire.newDoc(data, path, id.toString())
       this.presentAlert();
       this.router.navigate(['']);
-
-    })
-
   }
 
 
@@ -87,27 +94,30 @@ export class RegistrarPage implements OnInit {
 
         }
         else{
-          this.api.postUsuario({
+          const data = {
             usuario: this.formulario.value.usuario,
             password: this.formulario.value.password,
             vehiculo: this.formulario.value.vehiculo,
+            id: this.listaUsuarios.length + 1,
             estado: 'off',
             uber:[{
               salida: "",
               precio: 0,
               patente: this.formulario.value.patente,
               modelo: this.formulario.value.modelo,
-              destino: "",}]
-          }).subscribe(data => {
+              destino: "",
+              inicio: ""
+            }]
+          }
+          const path = 'Usuarios/';
+          const id = this.listaUsuarios.length + 1;
+          this.fire.newDoc(data, path, id.toString())
             this.presentAlert();
             this.router.navigate([''])
-          })
         }
-
     }
-
-
   }
+
 
 
 

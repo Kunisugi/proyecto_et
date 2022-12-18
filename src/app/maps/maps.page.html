@@ -11,12 +11,13 @@
   <div id="map-container">
     <ion-searchbar edbounce=400 (ionChange)="search($event)" [value]="selectedAddress"></ion-searchbar>
     <ion-list lines="nones" *ngIf="addresses.length >0">
-      <ion-item button *ngFor="let address of addresses" (click)="onSelect(address)">
+      <ion-item id="click" button *ngFor="let address of addresses" (click)="onSelect(address)">
         <ion-icon name="pin"></ion-icon>
         {{ address }}
       </ion-item>
     </ion-list>
     <div id="mapa-box" tabindex="0"></div>
   </div>
+  <ion-button expand="block" (click)="onClick()"> Confirmar Viaje</ion-button>
 
 </ion-content>

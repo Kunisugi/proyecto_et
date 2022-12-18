@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UsuariosService} from './../../servicios/usuarios/usuarios.service';
+import { FirestoreService} from './../../servicios/DB/firestore.service';
 
 @Component({
   selector: 'app-listar-rutas',
@@ -10,13 +10,15 @@ export class ListarRutasPage implements OnInit {
   public rutas: Array<any> = [];
   public listarUser: Array<any> = [];
 
-  constructor(private api : UsuariosService ) { }
+  constructor(private fire: FirestoreService ) { }
 
   ngOnInit() {
-    this.api.listarUser$.subscribe(data => {
-      this.listarUser = data;
+    this.fire.listarUserDB$.subscribe(datos => {
+      this.listarUser = datos;
+      console.log(this.listarUser, 'soy listar usuarios en listar rutas')
     })
-    this.api.getPersona();
+    this.fire.getCollection();
+
 
   }
   ngDoCheck(){
