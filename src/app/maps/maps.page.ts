@@ -162,7 +162,6 @@ export class MapsPage implements OnInit {
     console.log(this.inicio)
     console.log(this.destino)
 
-
     const data = {
       estado: 'on',
       uber : [{
@@ -174,10 +173,11 @@ export class MapsPage implements OnInit {
         inicio: this.inicio,
         capacidad: this.arrayUber.capacidad
       }]}
+
        const userStorage = {
-        usuario : this.arrayUber.usuario,
-        password: this.arrayUber.password,
-        vehiculo: this.arrayUber.vehiculo,
+        usuario : this.user.usuario,
+        password:this.user.password,
+        vehiculo: this.user.vehiculo,
         estado: 'on',
         id: this.arrayUber.id,
         uber: [{
@@ -193,7 +193,9 @@ export class MapsPage implements OnInit {
       this.fire.updateDoc(data,'Usuarios', this.user.id.toString());
       localStorage.setItem("user", JSON.stringify(userStorage));
       this.viajeConfirmado();
-      this.router.navigate(['index'])
+      this.router.navigate(['index']).then(() => {
+        window.location.reload();
+      })
 
 
   }
