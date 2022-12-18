@@ -5,6 +5,8 @@ import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
 import { MapBoxService, Feature  } from '../servicios/mapBox/map-box.service';
 import { HttpClient } from '@angular/common/http';
 import { FirestoreService} from '../servicios/DB/firestore.service';
+import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-maps',
@@ -38,10 +40,10 @@ export class MapsPage implements OnInit {
     private geolocation: Geolocation,
     private mapboxService : MapBoxService,
     private http: HttpClient,
-    private fire: FirestoreService) {
-    Mapboxgl.accessToken = environment.MAPBOX_KEY,
-    this.getGeoLocation();
-
+    private fire: FirestoreService,
+    private alertController: AlertController,
+    private router : Router) {
+    Mapboxgl.accessToken = environment.MAPBOX_KEY
   }
 
    addresses:string[] = [];
@@ -63,6 +65,15 @@ export class MapsPage implements OnInit {
 
     }
    }
+
+   async viajeConfirmado() {
+    const alert = await this.alertController.create({
+      header: 'Alert',
+      message: 'Viaje confirmado, espera a los pasajeros',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
 
    onSelect(address : string){
     this.selectedAddress = address;
@@ -92,22 +103,12 @@ export class MapsPage implements OnInit {
         -70.70555523861034, -33.5988065509325
       ]
         });
-      this.crearMarcador(-70.70555523861034, -33.5988065509325);
-  }
+      }
 
-  crearMarcador(lng: number, lat: number){
-    const marker = new Mapboxgl.Marker({
-      draggable: true
-      }).setLngLat([  -70.70555523861034, -33.5988065509325])
-      .addTo(this.map);
-      marker.on("dragend",()=>
-      console.log(marker.getLngLat()))
-  }
 
   crearMarcador2(lng: number, lat: number){
     const marker = new Mapboxgl.Marker({
-      draggable: false,
-      color: 'red'
+      draggable: false
       }).setLngLat([lat,lng])
       .addTo(this.map);
       marker.on("dragend",()=>
@@ -170,7 +171,8 @@ export class MapsPage implements OnInit {
         modelo : this.arrayUber.modelo,
         destino: this.destino,
         patente: this.arrayUber.patente,
-        inicio: this.inicio
+        inicio: this.inicio,
+        capacidad: this.arrayUber.capacidad
       }]}
        const userStorage = {
         usuario : this.arrayUber.usuario,
@@ -184,12 +186,19 @@ export class MapsPage implements OnInit {
           modelo : this.arrayUber.modelo,
           destino: this.destino,
           patente: this.arrayUber.patente,
-          inicio: this.inicio
+          inicio: this.inicio,
+          capacidad: this.arrayUber.capacidad
         }],
       }
       this.fire.updateDoc(data,'Usuarios', this.user.id.toString());
       localStorage.setItem("user", JSON.stringify(userStorage));
+      this.viajeConfirmado();
+      this.router.navigate(['index'])
 
+
+  }
+  public volver(){
+    this.router.navigate(['index'])
 
   }
 

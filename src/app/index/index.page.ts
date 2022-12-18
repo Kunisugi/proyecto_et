@@ -25,6 +25,7 @@ export class IndexPage implements OnInit {
   public form(){this.formulario = this.fb.group({
     precio: new FormControl('',[Validators.required]),
     salida: new FormControl('', [Validators.required]),
+    capacidad: new FormControl ('', [Validators.required]),
   })};
 
   public logout(){
@@ -43,13 +44,15 @@ export class IndexPage implements OnInit {
 
      this.arrayUber = this.usuarioLinea.uber[0];
     const data = {
+      estado: 'off',
       uber : [{
         precio : this.formulario.value.precio,
         salida: this.formulario.value.salida,
         modelo : this.arrayUber.modelo,
         destino: "",
         patente: this.arrayUber.patente,
-        inicio: ""
+        inicio: "",
+        capacidad: this.formulario.value.capacidad
       }]}
 
     this.user = {
@@ -64,7 +67,8 @@ export class IndexPage implements OnInit {
         modelo : this.arrayUber.modelo,
         destino: "",
         patente: this.arrayUber.patente,
-        inicio: ""
+        inicio: "",
+        capacidad: this.formulario.value.capacidad
       }],
     }
     this.fire.updateDoc(data,'Usuarios', this.usuarioLinea.id.toString());

@@ -28,6 +28,10 @@ const routes: Routes = [{
   {
     path: 'index',
     loadChildren: () => import('./index/index.module').then( m => m.IndexPageModule)
+  },
+  {
+    path: 'rutas/infoRuta',
+    loadChildren: () => import('./info-ruta/info-ruta.module').then( m => m.InfoRutaPageModule)
   }
 
 ];

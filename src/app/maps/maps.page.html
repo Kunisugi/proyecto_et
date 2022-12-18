@@ -2,10 +2,13 @@
 <ion-header>
   <ion-toolbar>
     <ion-title style="text-align:center;">Mapa</ion-title>
+    <ion-button fill="outline" size="small" color="warning" (click)="volver()" id="boton"><ion-icon name="arrow-back-outline"></ion-icon></ion-button>
   </ion-toolbar>
+
 </ion-header>
 
 <ion-content>
+
 
 
   <div id="map-container">
@@ -16,6 +19,9 @@
         {{ address }}
       </ion-item>
     </ion-list>
+
+    <ion-button fill="outline" size="small" color="secondary" id="boton" (click)="getGeoLocation()"><ion-label>Mi Ubicacion</ion-label><ion-icon name="compass-outline"></ion-icon></ion-button>
+
     <div id="mapa-box" tabindex="0"></div>
   </div>
   <ion-button expand="block" (click)="onClick()"> Confirmar Viaje</ion-button>

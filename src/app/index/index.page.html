@@ -26,6 +26,11 @@
     <ng-template #hayDatos>
 
       <form [formGroup]="formulario" (ngSubmit)="data()">
+        <ion-item>
+          <ion-label position="floating" style="text-align:center;">Capacidad</ion-label>
+          <ion-input type="number" formControlName="capacidad"></ion-input>
+        </ion-item>
+
       <ion-item>
         <ion-label position="floating" style="text-align:center;">Precio por persona </ion-label>
         <ion-input type="number" formControlName="precio"></ion-input>
@@ -39,15 +44,12 @@
 
       </ion-item>
 
-      <ion-button expand="block" type="submit" >Confirmar viaje</ion-button>
+      <ion-button expand="block" type="submit" [disabled]="formulario.invalid">Confirmar viaje</ion-button>
     </form>
-
 
     </ng-template>
     <ng-template #noDatos>
 
     </ng-template>
-
-
 
 </ion-content>

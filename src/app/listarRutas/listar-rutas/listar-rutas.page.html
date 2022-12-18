@@ -1,27 +1,31 @@
 <ion-header>
   <ion-toolbar>
     <ion-title style="text-align:center;">Rutas</ion-title>
+    <ion-button fill="outline" size="small" color="warning" (click)="volver()" id="boton"><ion-icon name="arrow-back-outline"></ion-icon></ion-button>
+
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-  <ion-list>
-    <ion-item *ngFor="let ruta of rutas">
-      <ion-card>
+
+    <p *ngFor="let ruta of rutas">
+      <ion-card [routerLink]="['infoRuta']" [queryParams]="{id:ruta.id}">
+        <ion-list>
         <ion-card-header>
           <ion-card-title>{{ruta.usuario}}</ion-card-title>
           <ion-card-subtitle></ion-card-subtitle>
         </ion-card-header>
 
         <ion-card-content *ngFor="let ruta of ruta.uber">
-
+        Asientos Disponibles: {{ruta.capacidad}} <br>
         Hora de salida: {{ruta.salida|date:'HH:mm'}} <br>
         Inicio : {{ruta.inicio}} <br>
         Destino: {{ruta.destino}}
         </ion-card-content>
+      </ion-list>
       </ion-card>
-    </ion-item>
-  </ion-list>
+    </p>
+
 
 </ion-content>
